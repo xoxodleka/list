@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>노래모음</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+      background: linear-gradient(to right, #fdfbfb, #ebedee);
+      color: #111;
+    }
+    img.logo {
+      width: 220px;
+      display: block;
+      margin: 0 auto 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      font-size: 16px;
+      width: 320px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .table-container {
+      height: 500px;
+      overflow-y: scroll;
+      margin: 0 auto;
+      max-width: 520px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      background: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: #f6f6f6;
+      cursor: pointer;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    th.sortable:hover {
+      background-color: #eaeaea;
+    }
+    td.price {
+      width: 80px;
+      font-weight: bold;
+      color: #444;
+    }
+    .count {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <img src="https://stimg.sooplive.com/NORMAL_BBS/0/29881130/184469f841a8117f2.png" class="logo" alt="Dohee Logo">
+  <h1>스테이지뮤즈 시그목록</h1>
+  <input type="text" id="searchInput" placeholder="곡 제목으로 검색 (예: 지연응원가)">
+  <div class="table-container">
+    <table id="sigTable">
+      <thead>
+        <tr>
+          <th class="sortable" id="sortPrice">번호 ▼</th>
+          <th>제목</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="count" id="countInfo"></div>
+
+  <script>
+    const sigData = `1463 천사양순
+1470 지연응원가
+1472 천사초이
+1474 천사지아
+1480 천사나은
+1482 천사차밍
+1499 천사유설
+5000 스테이지뮤즈
+5763 오직양순
+5780 오직나은
+5980 오구오구나은
+5982 오구차밍
+10014 ONECE
+12463 많이사랑해양순
+12470 많이사랑해지연
+12474 많이사랑해지아
+12480 많이사랑해나은
+12482 많이사랑해차밍
+12499 많이사랑해유설
+20000 시대를 초월한 마음
+100 이쁜이는 뒤를돌아봅니다
+140 만두송
+200 모찌송
+300 간바떼
+400 미워
+490 오버드라이브
+555 호시탐탐
+666 솜사탕
+700 샤넬챌린지
+858 오빠바이러스
+888 제로투
+999 LSD
+1000 뮤즈스테이
+1001 이안챌린지
+1003 푸른산호초
+1004 외모체크
+1006 무아
+1010 진압해
+1020 캐치캐치
+1055 고민중독
+1060 바람피면D지는거야
+1099 폼미쳤다
+1101 나루토
+1120 IF YOU LOVE ME
+1121 LUV
+1160 여우
+1170 벌룬인러브
+1190 WTF
+1200 CHANEL
+1212 아로아로
+1215 버블버블
+1230 첫눈
+1235 PSYCHO 
+1240 배드빌런 
+1245 너만아니면돼
+1250 자기야화풀어
+1280 CUPID
+1300 바빠
+1305 테디베어
+1310 NOT CUTE ANY MORE
+1315 여름이었다
+1320 사랑받을준비완료
+1325 나랑사귈래
+1330 왠지
+1335 펌업더블루
+1340 흔들려
+1345 팬서비스
+1350 두번째지구
+1355 스트로베리러쉬
+1365 같은곳에서
+1370 CHEER UP
+1380 BLUE VALENTINE
+1505 슈파두파
+1515 착하다는말이 제일싫어
+1516 모시모시
+1525 불도저
+1550 포켓로켓
+1560 푱푱
+1575 왓이즈럽
+1600 종소리
+1610 예쁜게죄
+1615 DRIP
+1675 러브샷
+1680 눈물참기
+1690 우리의 다정한계절속에
+1715 우주로
+1740 러브쉐이크
+1770 어마어마해
+1790 DOOR
+1810 봄그리고너
+1870 키딩
+1880 왜요왜요
+1890 그래비티
+1900 리와인드
+1920 빛을따라서
+1940 비밀정원
+1950 바다보러갈래
+1960 너와의모든지금 with you
+1999 핑크레이디
+2000 리치맨
+2025 롤러코스터
+2026 위고업
+2222 터미널
+2440 라라리라라
+2600 간바레센빠이
+2626 우유
+2870 뱅뱅
+3000 한마디
+3001 엉큰녀
+3010 하트춤
+3131 로스트컨트롤
+3330 피리
+3333 마티니
+3495 아헤가오
+3874 와타시
+4000 오빠달려붕붕
+4444 드라군
+5555 계엄령
+6000 여우비
+6020 WATER
+7777 백갑숙도포카치고
+8000 온더그라운드
+9797 우끼긴하네
+10000 사기캐
+30000 CROWNMAKER
+`;
+
+    const sigList = sigData.trim().split('\n').map(line => {
+      const [price, ...titleParts] = line.trim().split(' ');
+      return { price: parseInt(price), title: titleParts.join(' ') };
+    });
+
+    const tableBody = document.querySelector('#sigTable tbody');
+    const countInfo = document.getElementById('countInfo');
+
+    function renderTable(data) {
+      tableBody.innerHTML = data.map(sig => `
+        <tr>
+          <td class="price">${sig.price}</td>
+          <td>${sig.title}</td>
+        </tr>
+      `).join('');
+      countInfo.textContent = `총 ${data.length.toLocaleString()}개의 곡이 있습니다.`;
+    }
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const keyword = e.target.value.toLowerCase();
+      const filtered = sigList.filter(sig => sig.title.toLowerCase().includes(keyword));
+      renderTable(filtered);
+    });
+
+    let ascending = true;
+    document.getElementById('sortPrice').addEventListener('click', () => {
+      ascending = !ascending;
+      const sorted = [...sigList].sort((a, b) => ascending ? a.price - b.price : b.price - a.price);
+      renderTable(sorted);
+      document.getElementById('sortPrice').textContent = ascending ? '번호 ▲' : '번호 ▼';
+    });
+
+    renderTable(sigList);
+  </script>
+</body>
+</html>
